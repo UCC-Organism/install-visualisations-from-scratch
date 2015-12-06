@@ -56,7 +56,7 @@ This is the root folder for everything we will be doing after this.
 
 # Installing the test server
 
-Install the source
+Install the source for the backend server
 ```
 ~/ucc$ git clone https://github.com/ucc-organism/uccorg-backend
 ~/ucc$ cd uccorg-backend
@@ -72,7 +72,7 @@ Run the server
 It will start writing a lot of lines like this:
 [picture from terminal]
 
-Open browser and check look at http://localhost:8080, you will look like something like this:
+Open browser and check look at http://localhost:8080, you will see something like this:
 [picture from safari]
 
 # Install the ucc-organism visualisation for local testing

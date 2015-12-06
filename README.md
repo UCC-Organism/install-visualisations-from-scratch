@@ -151,9 +151,7 @@ Edit the file setenv.sh to point to you system’s Android SDK, ANT and XWALK di
 ~/ucc/buildsystem/crosswalk-odroid-ucc$ nano setenv.h
 ```
 
-[picture of setenv.sh]
-
-
+![setenv.sh](/images/setenv.sh.png)
 
 # Compiling the APK
 Now that we have specified where the compiler can find its directories we can compile.

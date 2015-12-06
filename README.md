@@ -7,11 +7,9 @@ We will be running this on a completely virgin copy of MACOSX EL CAPITAN. We exp
 
 Open Terminal
 
-[A note on Terminal: normally the default shell on MACOSX (bash) shows the current directory your in as well as the name of the volume and user logged in. So for example on our test system the command prompt look like this:
+[A note on Terminal: normally the default shell on MACOSX (bash) shows the current directory you are in as well as the name of the volume and user logged in. So for example on our test system the command prompt look like this:
 
-```
-CIIDResearch:ucc-organism cr$ [some command here]
-```
+![Normal Terminal look](/images/terminal.png)
 
 Specifying we are in on the “CIIDResearch” volume in the “ucc-organism” folder with the user “cr”.
 For the sake of clarity we will here type the full path from the user’s home folder, but leave out volume and user name, so the same prompt here will be:
@@ -23,9 +21,9 @@ For the sake of clarity we will here type the full path from the user’s home f
 We will keep this nomenclature throughout this document]
 
 # Installing Node.js and dependencies
-download and install nodejs from the www.nodejs.org website. Avoid using Homebrew for now. It will work, but there might be problems later on when trying to update Node.js.
+download and install Node.js from the www.nodejs.org website. Avoid using Homebrew for now. It will work, but there might be problems later on when trying to update Node.js.
  
-check that Node actually installed
+check that Node actually installed. It should output the current version number like `v4.2.1`
 
 ```
 ~$ node --version
@@ -70,10 +68,12 @@ Run the server
 ```
 
 It will start writing a lot of lines like this:
-[picture from terminal]
+![Backend Running](/images/backendinterminal.png)
 
-Open browser and check look at http://localhost:8080, you will see something like this:
-[picture from safari]
+Open a browser and point it to `http://localhost:8080`. You will see something like this:
+![Backend running in browser](/images/backendinbrowser.png)
+
+Kill the backend in the terminal with CTRL-C
 
 # Install the ucc-organism visualisation for local testing
 
@@ -87,25 +87,23 @@ Install and prepare the client build
 ~/ucc/ucc-organism$ ./bundle.sh
 ```
 
-Back in the first (backend)terminal window start the test server as described before.
-In the second (frontend) window change directory to the build directory and run a simple server to connect to the visualisation.
+Back in the first (backend) terminal window start the test server as described before.
+In the second (frontend) terminal window change directory to the build directory and run a simple server to connect to the visualisation.
 
 ```
 ~/ucc/ucc-organism$ cd build
 ~/ucc/ucc-organism/build$ python -m SimpleHTTPServer
 ```
 
-Open your browser and connect it to ```http://localhost:8000```
+Open your browser and connect it to `http://localhost:8000`
 
-You should see this:
-[picture of browser]
+You should see something like this:
+![Visualisation running in browser](/images/visualisationinbrowser.png)
 
-CTRL-C to close what’s running in both terminal windows.
-
-
+CTRL-C in each terminal window to close the backend server and the frontend http server.
 
 # Making the visualisation run on Odroid
-in the ucc folder make a folder called “buildsystem“
+In the ucc root folder make a folder called “buildsystem“
 
 ```
 ~$ cd ucc
@@ -116,31 +114,34 @@ Download the Android SDK Tools via browser:
 * point your browser to https://developer.android.com/sdk/installing/index.html?pkg=tools
 * click “download the SDK now”
 * click the MacOSX package (in time of writing “android-sdk_r24.4.1-macosx.zip”) and accept the license for it to download
-* move it to the ucc/buildsystem folder (you can place it somewhere else but our walkthrough is assuming it is there)
-* Download and install the Java JDK. We got it from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html. Otherwise google “Java JDK”. We selected the 8u66 version. Not sure what is best, guess the most up to date will do.
+* unpack and move the unpacked folder to the ucc/buildsystem folder (you can place it somewhere else but this walkthrough is assuming it is in that location)
+* Download and install the Java JDK. We got it from http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html. Otherwise google “Java JDK”. We selected the 8u66 version (note: at time of writing 8u66 was listed *after* 8u55).
+* Download and unpack the Apache ANT zip from http://ant.apache.org/bindownload.cgi
+*Also move this unpacked folder to the ucc/buildsystem folder
 
-back in the terminal (ucc root directory) navigate to the android folder and then the tools folder and run the tool
+back in the terminal (ucc root directory) navigate to the android folder and then the tools folder and run the tool (remember the dot)
 
 ```
-~$ cd ucc/buildsystem/android-sdk-macosx
+~/ucc$ cd buildsystem/android-sdk-macosx
 ~/ucc/buildsystem/android-sdk-macosx$ cd tools
-~/ucc/buildsystem/android-sdk-macosx/tools$ . android (remember the dot)
+~/ucc/buildsystem/android-sdk-macosx/tools$ . android
 ```
 
 This opens a window in your desktop environment.
-Set the following variables and only those:
+Set the following variables and only those (uncheck anything else already checked):
+
 * SDK Platform Tools 23.0.1
 * SDK Build-Tools 20
 * Android 5.0.1 API 21
-[screen for android tool]
-once downloaded and installed (it takes a while) close the tool
 
-Download and install the Apache ANT zip from http://ant.apache.org/bindownload.cgi
-Also move this to the ucc/buildsystem folder
+![View of checked items in Android tool](/images/android_sdk_manager.png)
 
-clone the crosswalk git repository
+once the tool has downloaded and installed the 16 packages (it takes a while) close it.
+
+Now go back to the ucc/buildsystem folder and clone the crosswalk git repository
 
 ```
+~/ucc/buildsystem/android-sdk-macosx/tools$ cd ucc/buildsystem
 ~/ucc/buildsystem$ git clone https://github.com/UCC-Organism/crosswalk-odroid-ucc.git
 ```
 

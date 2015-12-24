@@ -198,8 +198,130 @@ Next we need to get it on the Odroid.
 # Installing on SDCARD for ODROID
 Download the current version ODROID-OS-IMAGE from https://drive.google.com/open?id=0BytYPd68_1xNfkNPWlU2NXh1enNaYmliQks5VVV4ZnZGZkUyaXM5VXNkZEZaamZNQlpZSmM - this will take a while (~900MB)
 
-To install it on an SDCARD follow the description here (TODO)
+## STEP 1 : Creating SDCARD
 
-once it is installed and you have booted the Odroid (with a screen attached) to check that  it is working, we need to update the apk via the apk updater.
+```
+~$ diskutil list
+~$ sudo diskutil unmount /dev/diskXs1
+~$ sudo dd if=ucc_odroid.img of=/dev/rdiskX bs=1m
+```
+Open a new terminal window and cd to the folder where the downloaded Odroid image is (where you can find image named - ucc_odroid.img). In the following we are assuming you downloaded to the Download folder and unzipped it there.
+
+```
+~$ cd Downloads
+```
+
+Make sure the sdcard is inserted onto your Mac and then in terminal issue the command:
+
+```
+~/Downloads$ diskutil list
+```
+
+You should see a list of mounted disk on your system - identify the one which represents the sdcard (example: /dev/disk2)
+
+![output of diskutil list](/images/diskutil_list.png)
+
+Let’s say /dev/diskX represent the sdcard on your system - in terminal issue command:
+
+```
+~/Downloads$ sudo diskutil unmount /dev/diskXs1
+```
+
+This unmounts the sd-card so that we can write to it. Then in terminal issue command:
+
+```
+~/Downloads$ sudo dd if=ucc_odroid.img of=/dev/rdiskX bs=1m
+```
+
+This will copy verbatim the bits in the image file to the sdcard. This can take awhile. Make a cup of coffee while you wait about 10 minutes. 
+Once it is done (you see the terminal prompt again) manually eject the card (through Finder or Explorer).
+
+## STEP 2: Edit system.conf file on the SDCARD
+
+![system.conf on SDCARD](/images/odroid_system_conf.png)
+
+A. Re-insert the sdcard on your machine (MAC or PC)
+B. Using Finder or Explorer open the file <SDCARD>/Organism/system.conf using a basic text editor
+C. Editable elements in /Organism/system.conf are seen below
+
+```
+"client_id": String
+```
+
+> string literal that represents the identifier of the node / odroid. the value is an integer (ex: “3” or “11”) and defaults to “0”. Remember parentheses. Example: `“client_id”:”0”`
+
+```
+"api_server_url": String
+```
+
+> IP address of the data server, providing all necessary data to the apk. Slashes “/” *must* be escaped with a backslash “\” and include the port number (Example: `“api_server_url”:”http:\/\/192.168.1.160:8080”`). The port number is always 8080 (unless the backend developer changes it).
+> When the server url string is empty - ex: `“api_server_url”:””` - the application defaults to pre-scripted data scenarios without trying to contact the server.
+
+```
+"apk_update_on_boot": String { “true” or “false” }
+```
+
+> configuration that informs the system to look for apk update at boot time. Example: `“apk_update_on_boot”:”true”`
+
+```
+"apk_updater_server": String (IP address)
+```
+
+> apk server IP where the system looks for updates (NOTE: slashes “/” *must* be escaped with a backslash “\” - Example: `"apk_updater_server":"http:\/\/node.variable.io"`)
+
+```
+"apk_update_interval": String
+```
+
+> string literal informing the system on the rate at which it should look for apk updates (updates intervals). 
+> the format of the string is `“X:Y”` where X is an integer and Y a character in the range {’M’, ‘H’, ‘D’} -  [‘M’ - Minutes, ‘H’ - Hours, ‘D’ - Days] (Example: `"apk_update_interval":"3:M"` => 3 Minutes update interval)
+
+```
+"apk_updater_server_port": String (server port)
+```
+
+> open port of the apk server. `"apk_updater_server_port":"8088"`
+
+
+```
+"apk_updater_path": String (path on the sever)
+```
+
+> path on the apk server where the repository of apks reside (NOTE: slashes “/” *must* be escaped with a backslash “\” - ex: `"apk_updater_path":"\/ucc_organism"`)
+
+```
+"sleep_rtc_time": String
+```
+
+> string literal representing the time when the Odroid needs to shut down its connected display and enter its sleep cycle.
+> the format of the string is `“XX:YY”` where `XX` stands for Hours integer and `YY` for the Minutes integer (ex: `"sleep_rtc_time":"19:00"` => odroid sleeps at seven o’clock PM)
+
+```
+"wakeup_rtc_time": String
+```
+
+> string literal representing the time when the Odroid needs to wake up and reopen its connected display.
+> the format of the string is `“XX:YY”` where `XX` stands for Hours integer and `YY` for the Minutes integer (ex: `"wakeup_rtc_time":"8:00"` => odroid wakes up at eight o’clock AM)
+
+```
+"ucc_organism_deamon_wdt_minutes": Integer
+```
+
+> integer informing the system on the interval (in minutes) to keep monitoring the state of the running apk on the odroid. Example: `"ucc_organism_deamon_wdt_minutes":1` Please note the value is without parentheses.
+
+```
+"ucc_organism_deamon_timeout_max": Integer
+```
+
+> integer informing the system on the maximum numbers of apk state failures before restarting the whole apk altogether.  Example: `"ucc_organism_deamon_timeout_max":2` Please note the value is without parentheses.
+
+
+## STEP 3: Insert the SDCARD in the ODROID and turn on it's power
+
+The system will boot the os image and when completed, the apk starts automatically after less than 1 minute.
+
+Note 1: Boot time may vary depending on the quality of the sdcard (we observed that lesser quality sdcard take more time than higher quality ones)
+
+Note 2: If an update is available on the apk server and the "apk_update_on_boot" is set to true, the application will update automatically on boot and restart after successful update completion.
 
 # Installing the APK updater (TODO)

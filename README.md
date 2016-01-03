@@ -70,7 +70,7 @@ Run the server
 It will start writing a lot of lines like this:
 ![Backend Running](/images/backendinterminal.png)
 
-Open a browser and point it to `http://localhost:8080`. You will see something like this:
+Open a browser and point it to [http://localhost:8080](http://localhost:8080). You will see something like this:
 ![Backend running in browser](/images/backendinbrowser.png)
 
 Kill the backend in the terminal with CTRL-C
@@ -95,7 +95,7 @@ In the second (frontend) terminal window change directory to the build directory
 ~/ucc/ucc-organism/build$ python -m SimpleHTTPServer
 ```
 
-Open your browser and connect it to `http://localhost:8000`
+Open your browser and connect it to [http://localhost:8000](http://localhost:8000)
 
 You should see something like this:
 ![Visualisation running in browser](/images/visualisationinbrowser.png)
@@ -136,7 +136,7 @@ Set the following variables and only those (uncheck anything else already checke
 
 ![View of checked items in Android tool](/images/android_sdk_manager.png)
 
-once the tool has downloaded and installed the 16 packages (it takes a while) close it.
+once the tool has downloaded and installed the 16 packages (it takes a while) close it. The terminal window might terminate its process so that you'll have to close it and open it again.
 
 Now go back to the ucc/buildsystem folder and clone the crosswalk git repository
 
